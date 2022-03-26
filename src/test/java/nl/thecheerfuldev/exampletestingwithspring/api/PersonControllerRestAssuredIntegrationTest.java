@@ -12,8 +12,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
-import static io.restassured.RestAssured.with;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
@@ -39,7 +39,7 @@ class PersonControllerRestAssuredIntegrationTest {
 
     @Test
     void save() {
-        with().body("""
+        given().body("""
                         {
                           "name":"Mark",
                           "age":36,
