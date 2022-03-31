@@ -1,7 +1,9 @@
 package nl.thecheerfuldev.exampletestingwithspring.api;
 
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import nl.thecheerfuldev.exampletestingwithspring.entity.Person;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -37,6 +39,11 @@ class PersonControllerRestAssuredIntegrationTest {
         registry.add("spring.datasource.password", DATABASE::getPassword);
     }
 
+    @BeforeEach
+    void setUp() {
+        RestAssured.port = port;
+    }
+
     @Test
     void save() {
         given().body("""
@@ -47,13 +54,13 @@ class PersonControllerRestAssuredIntegrationTest {
                         }""")
                 .contentType(ContentType.JSON)
                 .when()
-                .post("http://localhost:" + port + "/person")
+                .post("/person")
                 .then()
                 .assertThat()
                 .statusCode(200);
 
         Person actual =
-                when().get("http://localhost:" + port + "/person/1")
+                when().get("/person/1")
                         .then()
                         .statusCode(200)
                         .contentType(ContentType.JSON)
